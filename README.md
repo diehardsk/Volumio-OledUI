@@ -23,7 +23,7 @@ enable SPI bus by adding
 ```
 dtparam=spi=on
 ```
-to /boot/config.txt -- it's a bit tricky because this file gets overwritten when Volumio system is updated to new version
+to /boot/userconfig.txt
 
 ### installation steps
 ```

@@ -14,7 +14,7 @@ It's highly recommended to use pull-up resistors and debounce filter caps for ro
 
 ## dependencies
 * [RPi.GPIO](https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/)
-* [socketIO-client-2](https://pypi.python.org/pypi/socketIO-client-2)
+* [socketIO-client](https://pypi.org/project/socketIO-client/)
 * PIL
 * [luma.oled](https://luma-oled.readthedocs.io/)
 
@@ -30,7 +30,7 @@ to /boot/userconfig.txt
 sudo apt-get update
 sudo apt-get install -y python-dev python-pip libfreetype6-dev libjpeg-dev build-essential python-rpi.gpio
 sudo pip install --upgrade setuptools pip wheel
-sudo pip install --upgrade socketIO-client-2 luma.oled
+sudo pip install --upgrade socketIO-client luma.oled==3.1.0
 git clone https://github.com/diehardsk/Volumio-OledUI.git
 chmod +x ~/Volumio-OledUI/oledui.py
 sudo cp ~/Volumio-OledUI/oledui.service /lib/systemd/system/

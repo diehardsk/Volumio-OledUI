@@ -106,7 +106,7 @@ def display_update_service():
         try:
             oled.modal.DrawOn(image)
         except AttributeError:
-            print "render error"
+            print ("render error")
         cimg = image.crop((pixshift[0], pixshift[1], pixshift[0] + oled.WIDTH, pixshift[1] + oled.HEIGHT)) 
         oled.display(cimg)
         sleep(UPDATE_INTERVAL)
@@ -166,7 +166,7 @@ def onPushState(data):
     if (newSong != oled.activeSong):    # new song
         oled.activeSong = newSong
         oled.activeArtist = newArtist
-        if oled.state == STATE_PLAYER and newStatus != 'stop':
+        if oled.state == STATE_PLAYER:
             oled.modal.UpdatePlayingInfo(newArtist, newSong)
 
     if newStatus != oled.playState:

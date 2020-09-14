@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 """
 Volumio User Interface: OLED 256x64 + 2x rotary encoder with pushbutton
-DiehardSK 2019
+DiehardSK 2020
 Inspired by Volumio HandsOn script
 """
 
@@ -126,7 +126,7 @@ def SetState(status):
         oled.modal = MenuScreen(oled.HEIGHT, oled.WIDTH, font2, oled.libraryNames, rows=3, label='------ Music Library ------')
 
 def LoadPlaylist(playlistname):
-    print ("loading playlist: " + playlistname.encode('ascii', 'ignore'))
+    print ("loading playlist: ", playlistname.encode('ascii', 'ignore'))
     oled.playPosition = 0
     volumioIO.emit('playPlaylist', {'name':playlistname})
     SetState(STATE_PLAYER)
@@ -195,28 +195,32 @@ def onLibraryBrowse(data):
     SetState(STATE_LIBRARY_MENU)
 
 def EnterLibraryItem(itemNo):
-    selectedItem = oled.libraryFull['navigation']['lists'][0]['items'][itemNo]
-    print("Entering library item: " + oled.libraryNames[itemNo].encode('ascii', 'ignore'))
-    if selectedItem['type'][-8:] == 'category' or selectedItem['type'] == 'folder':
-        volumioIO.emit('browseLibrary',{'uri':selectedItem['uri']})
+    try:
+        selectedItem = oled.libraryFull['navigation']['lists'][0]['items'][itemNo]
+    except IndexError:
+        LibraryReturn()
     else:
-        print("Sending new Queue")
-        volumioIO.emit('clearQueue')        #clear queue and add whole list of items
-        oled.queue = []
-        volumioIO.emit('addToQueue', oled.libraryFull['navigation']['lists'][0]['items'])
-        oled.stateTimeout = 5.0       #maximum time to load new queue
-        while len(oled.queue) == 0 and oled.stateTimeout > 0.1:
-            sleep(0.1) 
-        oled.stateTimeout = 0.2
-        print("Play position = " + str(itemNo))
-        volumioIO.emit('play', {'value':itemNo})
+        print("Entering library item: ", oled.libraryNames[itemNo].encode('ascii', 'ignore'))
+        if selectedItem['type'][-8:] == 'category' or selectedItem['type'] == 'folder':
+            volumioIO.emit('browseLibrary',{'uri':selectedItem['uri']})
+        else:
+            print("Sending new Queue")
+            volumioIO.emit('clearQueue')        #clear queue and add whole list of items
+            oled.queue = []
+            volumioIO.emit('addToQueue', oled.libraryFull['navigation']['lists'][0]['items'])
+            oled.stateTimeout = 5.0       #maximum time to load new queue
+            while len(oled.queue) == 0 and oled.stateTimeout > 0.1:
+                sleep(0.1) 
+            oled.stateTimeout = 0.2
+            print("Play position = " + str(itemNo))
+            volumioIO.emit('play', {'value':itemNo})
 
 def LibraryReturn():        #go to parent category
     if not 'prev' in oled.libraryFull['navigation']:
         SetState(STATE_PLAYER)
     else:
         parentCategory = oled.libraryFull['navigation']['prev']['uri']
-        print ("Navigating to parent category in library: " + parentCategory.encode('ascii', 'ignore'))
+        print ("Navigating to parent category in library: ", parentCategory.encode('ascii', 'ignore'))
         if parentCategory != '' and parentCategory != '/': 
             volumioIO.emit('browseLibrary',{'uri':parentCategory})
         else:
@@ -497,7 +501,7 @@ while True:
     if emit_track and oled.stateTimeout < 4.5:
         emit_track = False
         try:
-            print('Track selected: ' + str(oled.playPosition+1) + '/' + str(len(oled.queue)) + ' ' + oled.queue[oled.playPosition].encode('ascii', 'ignore'))
+            print('Track selected: ' + str(oled.playPosition+1) + '/' + str(len(oled.queue)) + ' ', oled.queue[oled.playPosition].encode('ascii', 'ignore'))
         except IndexError:
             pass
         volumioIO.emit('play', {'value':oled.playPosition})

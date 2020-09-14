@@ -30,7 +30,7 @@ to /boot/userconfig.txt
 sudo apt-get update
 sudo apt-get install -y python-dev python-pip libfreetype6-dev libjpeg-dev build-essential python-rpi.gpio
 sudo pip install --upgrade setuptools pip wheel
-sudo pip install --upgrade socketIO-client luma.oled==3.1.0
+sudo pip install --upgrade socketIO-client luma.core==1.8.3 luma.oled==3.1.0
 git clone https://github.com/diehardsk/Volumio-OledUI.git
 chmod +x ~/Volumio-OledUI/oledui.py
 sudo cp ~/Volumio-OledUI/oledui.service /lib/systemd/system/

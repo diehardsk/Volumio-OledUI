@@ -347,6 +347,11 @@ class MenuScreen():
 
     def SelectedOption(self):
         return self.selectedOption
+        
+    def UpdatePlayingInfo(self, row1, row2):
+        pass
+    def SetPlayingIcon(self, state, time=0):
+        pass
 
     def DrawOn(self, image):
         if self.hasLabel:
